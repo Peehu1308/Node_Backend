@@ -1,0 +1,216 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #F1F5F9; padding: 24px 12px 48px; }
+  :root {
+    --indigo: #4F46E5; --indigo-dark: #3730A3; --indigo-light: #EEF2FF;
+    --green: #059669; --green-bg: #ECFDF5; --green-bd: #6EE7B7; --green-text: #065F46;
+    --amber: #D97706; --amber-bg: #FFFBEB; --amber-bd: #FCD34D; --amber-text: #78350F;
+    --red: #DC2626; --red-bg: #FEF2F2; --red-bd: #FCA5A5; --red-text: #7F1D1D;
+    --grey: #94A3B8; --grey-bg: #F8FAFC; --grey-bd: #E2E8F0; --grey-text: #64748B;
+    --gold: #B45309;
+    --border: #E2E8F0; --text: #0F172A; --text-mid: #334155; --text-muted: #64748B; --text-dim: #94A3B8;
+    --surface: #FFFFFF; --surface2: #F8FAFC; --surface3: #F1F5F9;
+  }
+  .canvas {
+    width: 900px; max-width: 100%; margin: 0 auto;
+    background: #FFFFFF; border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 8px 24px rgba(15,23,42,0.07);
+    overflow: hidden;
+  }
+  .masthead {
+    background: linear-gradient(135deg, #1E1B4B 0%, #312E81 40%, #3730A3 100%);
+    padding: 36px 44px 32px;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+  }
+  .masthead::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 20%, rgba(165,180,252,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .org-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.75); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 100px; margin-bottom: 14px;
+  }
+  .org-dot { width: 5px; height: 5px; border-radius: 50%; background: #7DD3FC; }
+  .masthead-title { font-size: 28px; font-weight: 700; color: #FFF; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .masthead-title em { color: #BAE6FD; font-style: normal; }
+  .masthead-sub { font-size: 12.5px; color: rgba(255,255,255,0.55); font-weight: 400; letter-spacing: 0.01em; }
+  .body { padding: 28px 44px 36px; background: var(--surface2); }
+ 
+  .section-label { 
+    font-size: 10px; font-weight: 600; letter-spacing: 0.1em; 
+    text-transform: uppercase; color: var(--text-muted); 
+    margin-bottom: 12px; text-align: center; 
+  }
+  .lb { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .lb-head {
+    display: grid; grid-template-columns: 60px 1fr 180px 140px;
+    background: var(--surface3); border-bottom: 1px solid var(--border); padding: 10px 20px;
+  }
+  .lb-th { font-size: 9.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+  .lb-th:last-child { text-align: right; }
+  .lb-th:nth-child(3) { text-align: center; }
+
+  .lb-row {
+    display: grid; grid-template-columns: 60px 1fr 180px 140px;
+    padding: 13px 20px; border-bottom: 1px solid var(--border);
+    align-items: center; transition: background 0.1s;
+  }
+  .lb-row:last-child { border-bottom: none; }
+  .lb-row:hover { background: #F8FAFF; }
+
+  /* Podium Styles */
+  .lb-row.row-gold { background: #FFFCF0; border-left: 3px solid #F59E0B; padding-left: 17px; }
+  .lb-row.row-silver { background: #FAFBFF; border-left: 3px solid #94A3B8; padding-left: 17px; }
+  .lb-row.row-bronze { background: #FFF9F5; border-left: 4px solid #CD7C4D; padding-left: 17px; }
+  
+  /* Not Attempted Row Style */
+  .lb-row.row-na { opacity: 0.6; background: #FDFDFD; }
+
+  .rank-cell { text-align: center; }
+  .rank-num { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+  .rank-medal { font-size: 20px; line-height: 1; }
+  .intern-name { font-size: 13.5px; font-weight: 600; color: var(--text); }
+  
+  .bar-wrap { padding: 0 12px; }
+  .bar-track { height: 6px; background: #EEF2FF; border-radius: 100px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 100px; width: 0; transition: width 1s ease 0.2s; }
+  
+  /* Progress Bar Colors */
+  .bar-fill.green { background: linear-gradient(90deg, #059669, #34D399); }
+  .bar-fill.amber { background: linear-gradient(90deg, #D97706, #FBBF24); }
+  .bar-fill.red   { background: linear-gradient(90deg, #DC2626, #F87171); }
+  .bar-fill.na    { background: #CBD5E1; }
+
+  .score-cell { text-align: right; }
+  .score-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 700;
+    padding: 5px 12px; border-radius: 8px; border: 1px solid;
+    text-transform: uppercase;
+  }
+  
+  /* Badge Colors */
+  .score-badge.green { background: var(--green-bg); border-color: var(--green-bd); color: var(--green-text); }
+  .score-badge.amber { background: var(--amber-bg); border-color: var(--amber-bd); color: var(--amber-text); }
+  .score-badge.red   { background: var(--red-bg);   border-color: var(--red-bd);   color: var(--red-text); }
+  .score-badge.na    { background: var(--grey-bg);  border-color: var(--grey-bd);  color: var(--grey-text); }
+
+  .footer {
+    border-top: 1px solid var(--border); padding: 14px 44px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface3);
+  }
+  .footer-left { font-size: 11px; color: var(--text-dim); }
+  .footer-right { font-size: 11px; font-weight: 700; color: var(--indigo); letter-spacing: 0.06em; }
+</style>
+
+<div class="canvas" id="canvas">
+  <div class="masthead">
+    <div class="org-pill"><span class="org-dot"></span>Homefirst Finance (Internal)</div>
+    <div class="masthead-title">Batch 01 <em>Quiz Scoreboard</em></div>
+    <div class="masthead-sub">Week 1 Evaluation &nbsp;·&nbsp; 13 Interns Enrolled &nbsp;·&nbsp; 100 Points Max</div>
+  </div>
+  <div class="body">
+    <div class="section-label">Full Leaderboard — Ranked by Score</div>
+    <div class="lb">
+      <div class="lb-head">
+        <div class="lb-th">Rank</div>
+        <div class="lb-th">Intern Name</div>
+        <div class="lb-th" style="text-align:center">Progress</div>
+        <div class="lb-th">Score</div>
+      </div>
+      <div id="lb-body"></div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-left">Generated by Homefirst Finance LMS &nbsp;·&nbsp; Batch 01</div>
+    <div class="footer-right">HOMEFIRST FINANCE</div>
+  </div>
+</div>
+
+<script>
+const DATA = [
+  { name: "Ayush Jain", score: 75 },
+  { name: "Dushyant Gutla", score: 72 },
+  { name: "Thejaswini R", score: 67 },
+  { name: "Thejas M S", score: 64 },
+  { name: "Vismaya Vikram", score: 55 },
+  { name: "Ritish Anand", score: 52 },
+  { name: "Jaya N", score: 49 },
+  { name: "RIKESH G", score: 45 },
+  { name: "Piyush Jain", score: 44 },
+  { name: "ArunKumar S", score: 38 },
+  { name: "Vijay Prajapat", score: 33 },
+  { name: "Lakshit Bhardwaj", score: null },
+  { name: "Shreekant Saini", score: null }
+];
+const MAX = 100, TOP = 65, AVG = 50;
+
+function getCat(s) {
+  if (s === null) return 'na';
+  if (s >= TOP) return 'green';
+  if (s >= AVG) return 'amber';
+  return 'red';
+}
+
+// Custom sort: Put scores in descending order, nulls at the end
+const ordered = [...DATA].sort((a, b) => {
+  if (a.score === null) return 1;
+  if (b.score === null) return -1;
+  return b.score - a.score;
+});
+
+let rankCount = 0;
+
+document.getElementById('lb-body').innerHTML = ordered.map((intern, idx) => {
+  const isAtt = intern.score !== null;
+  const rank  = isAtt ? ++rankCount : null;
+  const cat   = getCat(intern.score);
+  const pct   = isAtt ? Math.round(intern.score / MAX * 100) : 0;
+  
+  let rowCls = '';
+  if (!isAtt) {
+      rowCls = 'row-na';
+  } else {
+      if (rank === 1) rowCls = 'row-gold';
+      else if (rank === 2) rowCls = 'row-silver';
+      else if (rank === 3) rowCls = 'row-bronze';
+  }
+
+  const rankHTML = isAtt 
+    ? (rank <= 3 ? `<span class="rank-medal">${['🥇','🥈','🥉'][rank-1]}</span>` : `<span class="rank-num">${rank}</span>`)
+    : `<span class="rank-num" style="color:#CBD5E1">—</span>`;
+
+  const scoreText = isAtt ? `${intern.score} / ${MAX}` : "Not Attempted";
+
+  return `<div class="lb-row ${rowCls}">
+    <div class="rank-cell">${rankHTML}</div>
+    <div><div class="intern-name" style="${!isAtt ? 'color:#94A3B8' : ''}">${intern.name}</div></div>
+    <div class="bar-wrap">
+      <div class="bar-track">
+        <div class="bar-fill ${cat}" data-pct="${pct}" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="score-cell">
+      <span class="score-badge ${cat}">
+        ${scoreText}
+      </span>
+    </div>
+  </div>`;
+}).join('');
+
+requestAnimationFrame(() => {
+  setTimeout(() => {
+    document.querySelectorAll('[data-pct]').forEach(el => {
+      el.style.width = el.dataset.pct + '%';
+    });
+  }, 200);
+});
+</script>

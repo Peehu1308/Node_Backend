@@ -1,0 +1,26 @@
+{
+  "name": "node_backend",
+  "version": "1.0.0",
+  "description": "This is a tutorial for node",
+  "main": "1-intro.js",
+  "scripts": {
+    "start":"nodemon app.js",
+    "dev":"node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Peehu1308/Node_Backend.git"
+  },
+  "author": "Peehu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Peehu1308/Node_Backend/issues"
+  },
+  "homepage": "https://github.com/Peehu1308/Node_Backend#readme",
+  "dependencies": {
+    "lodash": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
