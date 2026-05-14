@@ -3,19 +3,21 @@ const app=express();
 
 // req=>middleware=>res
 
-app.get('/',(req,res)=>{
+const logger=(req,res,next)=>{
     const method=req.method;
     const url=req.url;
     const time=new Date().getFullYear();
     console.log(method,url,time);
-    return res.send('Home')
+    next();
+}
+
+app.get('/',logger,(req,res)=>{
+    
+    res.send('Home')
 })
 
-app.get('/about',(req,res)=>{
-    const method=req.method;
-    const url=req.url;
-    const time=new Date().getFullYear();
-    console.log(method,url,time);
+app.get('/about',logger,(req,res)=>{
+    
     return res.send('About');
 })
 
