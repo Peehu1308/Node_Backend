@@ -1,24 +1,36 @@
 const express=require('express');
 const app=express();
-
+const 
+const logger=require('./logger.js')
+const authorize=require('./authorize.js')
 // req=>middleware=>res
 
-const logger=(req,res,next)=>{
-    const method=req.method;
-    const url=req.url;
-    const time=new Date().getFullYear();
-    console.log(method,url,time);
-    next();
-}
+app.use([logger,authorize])
 
-app.get('/',logger,(req,res)=>{
+// app.use('/api',logger);
+// api/home/about/products
+
+// app.get('/',logger,(req,res)=>{
+    
+//     res.send('Home')
+// })
+app.get('/',(req,res)=>{
     
     res.send('Home')
+    console.log(req.user)
 })
 
-app.get('/about',logger,(req,res)=>{
+app.get('/about',(req,res)=>{
     
     return res.send('About');
+})
+app.get('/api/products',(req,res)=>{
+    
+    return res.send('products');
+})
+app.get('/api/items',(req,res)=>{
+    
+    return res.send('items');
 })
 
 app.listen(5000,()=>[
