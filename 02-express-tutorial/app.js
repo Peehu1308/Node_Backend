@@ -1,11 +1,12 @@
 const express=require('express');
 const app=express();
-const 
+const morgan=require('morgan')
 const logger=require('./logger.js')
 const authorize=require('./authorize.js')
 // req=>middleware=>res
 
-app.use([logger,authorize])
+app.use(morgan('tiny'))
+// app.use([logger,authorize])
 
 // app.use('/api',logger);
 // api/home/about/products
