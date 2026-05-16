@@ -9,4 +9,4 @@ app.post('/login',(req,res)=>{
     res.status(401).send('please provide credentials')
 })
 
-module.exports
+module.exports=router
