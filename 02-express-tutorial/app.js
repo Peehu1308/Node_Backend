@@ -1,13 +1,14 @@
 const express=require('express');
 const app=express();
-let {people}=require('./data')
-
+const people=require('./routes/people')
 // static assets
 app.use(express.static('./methods-public'))
 // parse form data
 app.use(express.urlencoded({extended:false}))
 // parse json
 app.use(express.json())
+
+app.use('/api/people',people)
 
 
 app.get('/api/people',(req,res)=>{
@@ -16,13 +17,7 @@ app.get('/api/people',(req,res)=>{
 })
 
 
-app.post('/login',(req,res)=>{
-    const {name}=req.body;
-    if(name){
-        return res.status(200).send(`welcome ${name}`)
-    }
-    res.status(401).send('please provide credentials')
-})
+
 app.post('/api/people',(req,res)=>{
     const {name}=req.body
     if(!name){
